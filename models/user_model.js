@@ -7,15 +7,28 @@ const userSchema = new mongoose.Schema(
       required: true,
       trim: true,
       unique: true,
+      index:true,
       minlength: 3,
     },
-
+    bio: {
+      type: String,
+      default: "",
+      maxlength: 160,
+    },
+    mobile: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      index:true,
+    },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
+      index:true,
     },
 
     password: {
@@ -44,6 +57,10 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: false,
+    },
+    refreshToken: {
+      type: String,
+      default: null,
     },
   },
   {

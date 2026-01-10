@@ -7,11 +7,6 @@ const router = express.Router();
 router.post("/signup", register);
 router.post("/signin", login);
 // ✅ Protected route example
-router.get("/profile", protect, (req, res) => {
-  res.json({
-    message: "Protected route accessed",
-    userId: req.user,
-  });
-});
-
+router.get("/profile", protect, require("../controllers/auth_controller").getProfile);
+router.put("/profile", protect, require("../controllers/auth_controller").updateProfile);
 module.exports = router;
