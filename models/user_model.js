@@ -1,21 +1,51 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+
+function generateId() {
+  const time = Date.now().toString();
+  const random = crypto.randomBytes(16).toString("hex");
+  return crypto
+    .createHash("sha256")
+    .update(time + random)
+    .digest("hex");
+}
+
 const userSchema = new mongoose.Schema(
   {
+    _id: {
+      type: String,
+      default: function () {
+        return generateId();
+      },
+    },
     username: {
       type: String,
       required: true,
       trim: true,
       unique: true,
+      index: true,
       minlength: 3,
     },
-
+    bio: {
+      type: String,
+      default: "",
+      maxlength: 160,
+    },
+    mobile: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      index: true,
+    },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
+      index: true,
     },
 
     password: {
@@ -45,9 +75,14 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    refreshToken: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true, // createdAt, updatedAt
+    collection: "usersed"
   }
 );
 userSchema.pre("save", async function () {
