@@ -83,7 +83,7 @@ const arcjetRateLimit = async (req, res, next) => {
       console.warn("⚠️ Arcjet error in development mode - allowing request");
       return next();
     }
-
+    
     // In production, fail open (allow request) but log the error
     next();
   }
